@@ -1,4 +1,5 @@
 import requests
+from send_email import send_email
 
 api_key = "7a90230871614d94acae52a2bc13172c"
 
@@ -10,8 +11,10 @@ request = requests.get(url)
 content = request.json()
 
 # Access article's title, author, ID and description.
-
+body = ""
 for article in content["articles"]:
-    print(article)
-    print(article['title'])
-    print(article['author'])
+    if article is not None:
+        body = body + article['title'] + "\n" + article['description'] + 2 * "\n"
+
+body = body.encode("utf-8")
+send_email(body)
